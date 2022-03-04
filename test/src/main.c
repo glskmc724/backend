@@ -18,7 +18,17 @@ void* http_handle(void* pArg)
 
     method = get_method(client.rx_stream);
     get_filename(client.rx_stream, filename);
+    if (strlen(filename) == 0)
+    {
+        sprintf(filename, "index");
+    }
     get_extension(filename, extension);
+    if (strlen(extension) == 0)
+    {
+        sprintf(extension, "html");
+        strcat(filename, ".");
+        strcat(filename, extension);
+    }
     content_len = read_content(filename, buffer);
     if (!(content_len < 0))
     {
