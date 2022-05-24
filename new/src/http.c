@@ -82,3 +82,29 @@ int load_req_img(char* buffer, char* file)
         return -1;
     }
 }
+
+int load_req_php(char* buffer, char* file)
+{
+	FILE* fp;
+	char c;
+	int idx = 0;
+	char path[MAX_HEADER_LEN] = "php pages/";
+
+	strcat(path, file);
+	fp = popen(path, "r");
+
+	if (fp != NULL)
+	{
+		while ((c = fgetc(fp)) != EOF)
+		{
+			buffer[idx++] = c;
+			//printf("%c", buffer[idx - 1]);
+		}
+		//printf("\n");
+		return idx;
+	}
+	else
+	{
+		return -1;
+	}
+}

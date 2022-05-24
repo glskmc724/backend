@@ -51,9 +51,8 @@ void get_handler(char** http, char** header, char** request, int lines, int user
 	int type;
 	int len;
 	
-	tx = (char*)malloc(sizeof(char) * 102400);
-	buffer = (char*)malloc(sizeof(char) * 102400);
-	
+	tx = (char*)malloc(sizeof(char) * 10240000);
+	buffer = (char*)malloc(sizeof(char) * 10240000);
 	printf("%s\n", request[1]);
 	if (strlen(request[1]) == 1)
 	{
@@ -70,6 +69,11 @@ void get_handler(char** http, char** header, char** request, int lines, int user
 			case HTTP_TYPE_HTML:
 				sprintf(file, "/%s.%s", filename[0], filename[1]);
 				req_len = load_req_text(buffer, file);
+				len = create_header(tx, request[2], "text/html", req_len, buffer);
+				break;
+			case HTTP_TYPE_PHP:
+				sprintf(file, "/%s.%s", filename[0], filename[1]);
+				req_len = load_req_php(buffer, file);
 				len = create_header(tx, request[2], "text/html", req_len, buffer);
 				break;
 			case HTTP_TYPE_ICON:
@@ -95,6 +99,8 @@ void get_handler(char** http, char** header, char** request, int lines, int user
 		len = create_header(tx, request[2], "text/html", req_len, buffer);
 	}
 	send_stream(user, tx, len);
+	free(tx);
+	free(buffer);
 }
 
 int handling(int user)

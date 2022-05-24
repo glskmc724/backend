@@ -69,6 +69,10 @@ int get_type(char* type)
 	{
 		return HTTP_TYPE_HTML;
 	}
+	else if (strncmp(type, "php", 3) == 0)
+	{
+		return HTTP_TYPE_PHP;
+	}
 	else if (strncmp(type, "ico", 3) == 0)
 	{
 		return HTTP_TYPE_ICON;
